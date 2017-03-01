@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+<category><pattern>MOTHMANE*</pattern>
+<template><srai>MOTHMANE</srai></template>
+</category>
+<category><pattern>TELL ME ABOUT MOTHMANE</pattern>
+<template><srai>MOTHMANE</srai></template>
+</category>
+<category><pattern>WHAT IS MOTHMANE</pattern>
+<template><srai>MOTHMANE</srai></template>
+</category>
+<category><pattern>MOTHMANE</pattern>
+<template>Mothmane is a game I made</template>
+</category>
+</aiml>
