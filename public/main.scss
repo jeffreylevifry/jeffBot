@@ -8,10 +8,18 @@ $dismiss-yellow: #f9ec31;
 body {
 	margin: 0;
 	padding: 0;
-	background-color: $sky-blue;
-	overflow: hidden;
-	background-repeat:  repeat;
+
 }
 
+#portfolio-outer{
+	background-color: $sky-blue;
+	
+}
+
+#chatShell{
+	background-color: $dismiss-yellow;
+	
+	
+}
 
 

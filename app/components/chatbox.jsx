@@ -11,7 +11,7 @@ class chatBox  extends React.Component{
 			
     return (
 
-      <NameForm/>
+      <div>Chatbox</div>
 
 
         )

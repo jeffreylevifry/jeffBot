@@ -14,8 +14,7 @@ class index  extends React.Component{
 
      <div id="index">
 
-
-			
+			{this.props.children}
 			</div>
 
         )
