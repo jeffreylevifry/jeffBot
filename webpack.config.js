@@ -3,6 +3,9 @@ module.exports = {
   output: {
     filename: "public/bundle.js"
   },
+  devServer: {
+   headers: { "Access-Control-Allow-Origin": "*" }
+},
   module: {
     loaders: [{
       test: /\.jsx?$/,
@@ -15,7 +18,10 @@ module.exports = {
       test: /\.scss$/,
       loaders: ['style-loader', 'css-loader', 'sass-loader']
     }
-    , {
+    ,
+    
+    
+    {
       test: /\.(png|gif)$/,
       loader: "url-loader?limit=5000"
     }

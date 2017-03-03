@@ -3,52 +3,60 @@ var ReactDOM = require('react-dom');
 
 
 class nameForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ''};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  }
-
-  render() {
-    
-          		var nameFormStyle = {
-          		  fontFamily: "Roboto",
-			position: "relative",
-			height: "25%",
-			width: "50%",
-			top: "10vh",
-			margin: "auto"
-
-			
+    constructor(props) {
+        super(props)
+        this.state = {
+            data: 'test'
+        };
+        this.update = this.update.bind(this);
+   
 
 
-		};
+
+    }
     
     
-    
-    return (
-      <div style={nameFormStyle}>
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+    update (){
+        
+        var x =ReactDOM.findDOMNode(this.refs.myInput).value;
+            
+        
+        console.log(x);
+        this.props.onUpdate(x);
+    }
+
+    render() {
+
+        var nameFormStyle = {
+            fontFamily: "Roboto",
+            position: "relative",
+            height: "25%",
+            width: "50%",
+            top: "10vh",
+            margin: "auto"
+
+
+
+
+        };
+
+
+
+        return (
+            <div style={nameFormStyle}>
+      
+              
+          <input type='text' ref='myInput'/>
+          <input type='button' onClick={this.update} value='Talk 2 Jeff'/>
+         
+
+      
+
       </div>
-    );
-  }
+        );
+    }
+
 }
 
 module.exports = nameForm;
