@@ -4,16 +4,6 @@ var io = require('socket.io');
 
 
 
-var socket = io('wss://peer-server-kcdcxjxqvq.now.sh', {
-  "force new connection" : true,
-  "reconnectionAttempts": "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
-  "timeout" : 1000, //before connect_error and connect_timeout are emitted.
-  "transports" : ["websocket"]
-});
-
-
-
-
 
 
 var ChatMessage = React.createClass({
@@ -126,6 +116,9 @@ var Chat = React.createClass({
       this.recieveMessage(message);
     })
   },
+  
+  
+  
   addMessage: function(message) {
     this.setState(function(previousState) {
       previousState.messages.push(message);
@@ -142,7 +135,7 @@ var Chat = React.createClass({
     });
   },
   sendMessage: function(message) {
-    socket.emit('create:message', message.message);
+
     this.addMessage(message)
   },
   
@@ -150,16 +143,7 @@ var Chat = React.createClass({
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  render: function() {
+    render: function() {
     return (
       <div>
         <div>{this.state.status}</div>

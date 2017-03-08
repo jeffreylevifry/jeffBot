@@ -8299,41 +8299,84 @@ var nameForm = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (nameForm.__proto__ || Object.getPrototypeOf(nameForm)).call(this, props));
 
         _this.state = {
-            data: 'test'
+            data: 'Talk to me!'
         };
-        _this.update = _this.update.bind(_this);
+        _this.onUpdate = _this.onUpdate.bind(_this);
+        _this.handleKeyPress = _this.handleKeyPress.bind(_this);
 
         return _this;
     }
 
     _createClass(nameForm, [{
-        key: 'update',
-        value: function update() {
+        key: 'handleKeyPress',
+        value: function handleKeyPress(event) {
 
+            if (event.key == 'Enter') {
+
+                this.onUpdate();
+                return;
+            };
+        }
+    }, {
+        key: 'onUpdate',
+        value: function onUpdate() {
+            console.log("update fired");
             var x = ReactDOM.findDOMNode(this.refs.myInput).value;
+            this.state.message = x;
+            console.log(this.state.message);
 
-            console.log(x);
-            this.props.onUpdate(x);
+            this.props.onUpdate(this.state.message);
+            this.refs.myInput.value = "";
         }
     }, {
         key: 'render',
         value: function render() {
 
             var nameFormStyle = {
-                fontFamily: "Roboto",
-                position: "relative",
-                height: "25%",
-                width: "50%",
-                top: "10vh",
-                margin: "auto"
+                position: "absolute",
+                bottom: 0,
+                paddingBottom: "10vh",
+                paddingTop: "3vh",
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                backgroundColor: "#131163",
+                left: 0
 
+            };
+
+            var inputStyle = {
+                position: "relative",
+                width: "80%",
+
+                borderRadius: 10,
+                fontFamily: "Roboto",
+                backgroundColor: "#99ffff",
+                border: "none",
+                height: "1.5em",
+                fontSize: "1em",
+                padding: ".15em",
+                margins: "1%"
+
+            };
+
+            var buttonStyle = {
+                borderRadius: 6,
+                backgroundColor: "#11ffff",
+                fontFamily: "Roboto Condensed",
+                border: "none",
+                width: "13%",
+                fontSize: "1em",
+                height: "1.75em",
+                marginLeft: ".5em",
+                padding: ".15em"
             };
 
             return React.createElement(
                 'div',
                 { style: nameFormStyle },
-                React.createElement('input', { type: 'text', ref: 'myInput' }),
-                React.createElement('input', { type: 'button', onClick: this.update, value: 'Talk 2 Jeff' })
+                React.createElement('input', { type: 'text', ref: 'myInput', style: inputStyle, onKeyDown: this.handleKeyPress }),
+                React.createElement('input', { type: 'button', style: buttonStyle, onClick: this.onUpdate, value: 'SEND' })
             );
         }
     }]);
@@ -12093,9 +12136,14 @@ var index = function (_React$Component) {
         key: 'render',
         value: function render() {
 
+            var indexStyle = {
+                height: "100%",
+                width: "100%"
+            };
+
             return React.createElement(
                 'div',
-                { id: 'index' },
+                { id: 'index', style: indexStyle },
                 this.props.children
             );
         }
@@ -12141,7 +12189,8 @@ var portfolio = function (_React$Component) {
     value: function render() {
 
       var portStyle = {
-        position: "absolute",
+        margin: 0,
+        padding: 0,
         height: "100%",
         width: "100%",
         textAlign: "center",
@@ -12152,7 +12201,6 @@ var portfolio = function (_React$Component) {
       return React.createElement(
         'div',
         { id: 'portfolio-outer', style: portStyle },
-        'JEFF BOT TEST',
         React.createElement(ChatShell, null)
       );
     }
@@ -12298,48 +12346,42 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = __webpack_require__(5);
 var ReactDOM = __webpack_require__(19);
 
-var botResponse = function (_React$Component) {
-  _inherits(botResponse, _React$Component);
+var chatHistory = function (_React$Component) {
+  _inherits(chatHistory, _React$Component);
 
-  function botResponse(props) {
-    _classCallCheck(this, botResponse);
+  function chatHistory(props) {
+    _classCallCheck(this, chatHistory);
 
-    var _this = _possibleConstructorReturn(this, (botResponse.__proto__ || Object.getPrototypeOf(botResponse)).call(this, props));
-
-    _this.state = {
-      value: ''
-    };
-    console.log(_this.props.data);
-
-    return _this;
+    return _possibleConstructorReturn(this, (chatHistory.__proto__ || Object.getPrototypeOf(chatHistory)).call(this, props));
   }
 
-  _createClass(botResponse, [{
+  _createClass(chatHistory, [{
     key: 'render',
     value: function render() {
 
-      var botResponseStyle = {
+      var historyStyle = {
         position: "relative",
-        height: "25%",
-        width: "50%",
+        height: "wrap",
+        width: "wrap",
         top: "16vh",
-        margin: "auto"
+        backgroundColor: "#fff"
 
       };
 
+      console.log(this.props.data);
+
       return React.createElement(
         'div',
-        { style: botResponseStyle },
-        'BOT RESPONSE = ',
+        { id: 'chatHistory', style: historyStyle },
         this.props.data
       );
     }
   }]);
 
-  return botResponse;
+  return chatHistory;
 }(React.Component);
 
-module.exports = botResponse;
+module.exports = chatHistory;
 
 /***/ }),
 /* 117 */
@@ -12359,7 +12401,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = __webpack_require__(5);
 var ReactDOM = __webpack_require__(19);
 var NameForm = __webpack_require__(72);
-var BotResponse = __webpack_require__(116);
+var ChatHistory = __webpack_require__(116);
+var ChatMessage = __webpack_require__(244);
 
 var chatShell = function (_React$Component) {
   _inherits(chatShell, _React$Component);
@@ -12369,27 +12412,32 @@ var chatShell = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (chatShell.__proto__ || Object.getPrototypeOf(chatShell)).call(this, props));
 
-    _this.state = {
-      data: 'test'
-    };
-    _this.onUpdate = _this.onUpdate.bind(_this);
+    _this.state = { messageHistory: [{ message: "Oh hai", from: "bot" }] };
+    _this.onMessageInput = _this.onMessageInput.bind(_this);
+    _this.addMessage = _this.addMessage.bind(_this);
+    _this.recieveMessage = _this.recieveMessage.bind(_this);
+    _this.sendMessage = _this.sendMessage.bind(_this);
+
     return _this;
   }
 
   _createClass(chatShell, [{
-    key: 'onUpdate',
-    value: function onUpdate(data) {
-
-      this.callBot(data);
+    key: 'onMessageInput',
+    value: function onMessageInput(message) {
+      if (message == "") {
+        return;
+      }
+      this.addMessage(message);
+      this.callBot(message);
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {}
   }, {
     key: 'callBot',
-    value: function callBot(data) {
+    value: function callBot(message) {
 
-      var message = data.replace(/\?/g, '');
+      var message = message.replace(/\?/g, '');
       var that = this;
       console.log("cleaned message = " + message);
       $.ajax({
@@ -12400,28 +12448,68 @@ var chatShell = function (_React$Component) {
         dataType: 'json',
         success: function success(data) {
           data = data.responses[0];
-          that.setState({ data: data });
+          that.recieveMessage(data);
         }
 
       });
+    }
+  }, {
+    key: 'addMessage',
+    value: function addMessage(data) {
+
+      this.setState(function (previousState) {
+        previousState.messageHistory.push({
+          message: data,
+          from: 'you'
+        });
+        return {
+          messageHistory: previousState.messageHistory
+        };
+      });
+    }
+  }, {
+    key: 'recieveMessage',
+    value: function recieveMessage(data) {
+
+      console.log(this.state.messageHistory);
+      this.setState(function (previousState) {
+        previousState.messageHistory.push({
+          message: data,
+          from: 'bot'
+        });
+
+        return {
+          messageHistory: previousState.messageHistory
+        };
+      });
+    }
+  }, {
+    key: 'sendMessage',
+    value: function sendMessage(message) {
+
+      this.addMessage(message);
     }
   }, {
     key: 'render',
     value: function render() {
 
       var outerStyle = {
-        height: "25%",
-        width: "25%",
+        height: "96%",
+        width: "96%",
         margin: "auto",
-        textAlign: "center"
+        padding: "2%"
 
       };
+
+      console.log(this.state.messageHistory);
 
       return React.createElement(
         'div',
         { id: 'chatShell', style: outerStyle },
-        React.createElement(NameForm, { onUpdate: this.onUpdate }),
-        React.createElement(BotResponse, { data: this.state.data })
+        this.state.messageHistory.map(function (message, i) {
+          return React.createElement(ChatMessage, { key: i, message: message });
+        }),
+        React.createElement(NameForm, { onUpdate: this.onMessageInput })
       );
     }
   }]);
@@ -12442,7 +12530,7 @@ exports = module.exports = __webpack_require__(119)();
 
 
 // module
-exports.push([module.i, "body {\n  margin: 0;\n  padding: 0; }\n\n#portfolio-outer {\n  background-color: #2B99FF; }\n\n#chatShell {\n  background-color: #f9ec31; }\n", ""]);
+exports.push([module.i, "body, html {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  width: 100%;\n  font-family: Roboto;\n  font-size: 15px;\n  color: #fff; }\n\n.message {\n  display: inline-block;\n  padding: 12px 20px;\n  border-radius: 10px;\n  font-family: Roboto; }\n\n.user-message {\n  float: right;\n  text-align: right;\n  margin-bottom: 1em;\n  width: 96%; }\n  .user-message .message {\n    background: #2B99FF; }\n\n.bot-message {\n  float: left;\n  text-align: left;\n  margin-bottom: 1em;\n  width: 96%; }\n  .bot-message .message {\n    background: #67A256; }\n\n.bot-message:after {\n  z-index: -1;\n  content: ' ';\n  position: relative;\n  width: 0;\n  height: 0;\n  left: -9%;\n  top: 0.7em;\n  border: 15px solid;\n  border-color: #67A256 transparent transparent #67A256; }\n\n.user-message:after {\n  z-index: -1;\n  content: ' ';\n  position: relative;\n  width: 0;\n  height: 0;\n  right: 11%;\n  top: 0.7em;\n  border: 15px solid;\n  border-color: #2B99FF #2B99FF transparent transparent; }\n", ""]);
 
 // exports
 
@@ -27249,6 +27337,66 @@ ReactDOM.render(React.createElement(
     React.createElement(_reactRouter.Route, { path: '/chatbox', name: 'chatbox', component: Chatbox })
   )
 ), document.getElementById('app'));
+
+/***/ }),
+/* 243 */,
+/* 244 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(5);
+var ReactDOM = __webpack_require__(19);
+
+var chatMessage = function (_React$Component) {
+  _inherits(chatMessage, _React$Component);
+
+  function chatMessage() {
+    _classCallCheck(this, chatMessage);
+
+    return _possibleConstructorReturn(this, (chatMessage.__proto__ || Object.getPrototypeOf(chatMessage)).apply(this, arguments));
+  }
+
+  _createClass(chatMessage, [{
+    key: 'generateClasses',
+    value: function generateClasses() {
+      if (this.props.message.from === 'bot') {
+        return 'bot-message';
+      } else {
+        return 'user-message';
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+
+      return React.createElement(
+        'div',
+        { className: this.generateClasses() },
+        React.createElement(
+          'div',
+          { className: 'message' },
+          this.props.message.message
+        )
+      );
+    }
+  }]);
+
+  return chatMessage;
+}(React.Component);
+
+;
+
+module.exports = chatMessage;
 
 /***/ })
 /******/ ]);

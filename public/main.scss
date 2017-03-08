@@ -4,22 +4,67 @@ $slate-grey: #545454;
 $dismiss-yellow: #f9ec31;
 
 
-
-body {
-	margin: 0;
-	padding: 0;
-
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Roboto;
+    font-size: 15px;
+    color: #fff;
 }
 
-#portfolio-outer{
-	background-color: $sky-blue;
-	
+#portfolio-outer {}
+
+.message {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: Roboto;
+    
 }
 
-#chatShell{
-	background-color: $dismiss-yellow;
-	
-	
+.user-message {
+    float: right;
+    text-align: right;
+    margin-bottom: 1em;
+    width: 96%;
+    .message {
+        background: $sky-blue;
+    }
 }
 
+.bot-message {
+    float: left;
+    text-align: left;
+    margin-bottom: 1em;
+    width: 96%;
+    .message {
+        background: $earth-green;
+    }
+}
+.bot-message:after {
+z-index: -1;
+  content: ' ';
+  position: relative;
+  width: 0;
+  height: 0;
+  left: -9%;
+  top: 0.7em;
+  border: 15px solid;
 
+  border-color: $earth-green transparent transparent $earth-green;
+}
+
+.user-message:after {
+z-index: -1;
+  content: ' ';
+  position: relative;
+  width: 0;
+  height: 0;
+  right: 11%;
+  top: 0.7em;
+  border: 15px solid;
+
+  border-color: $sky-blue $sky-blue transparent  transparent;
+}

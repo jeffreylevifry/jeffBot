@@ -7,12 +7,15 @@ class index  extends React.Component{
 
     render() {
 
-
+    var indexStyle={
+        height: "100%",
+        width: "100%"
+    }
 			
     return (
       
 
-     <div id="index">
+     <div id="index" style = {indexStyle}>
 
 			{this.props.children}
 			</div>

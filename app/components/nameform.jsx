@@ -7,48 +7,93 @@ class nameForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: 'test'
+            data: 'Talk to me!'
         };
-        this.update = this.update.bind(this);
-   
+        this.onUpdate = this.onUpdate.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
 
+    }
+
+
+
+    handleKeyPress(event) {
+
+        if (event.key == 'Enter') {
+
+            this.onUpdate();
+            return;
+
+        };
 
 
     }
-    
-    
-    update (){
-        
-        var x =ReactDOM.findDOMNode(this.refs.myInput).value;
-            
-        
-        console.log(x);
-        this.props.onUpdate(x);
+
+    onUpdate() {
+        console.log("update fired");
+        var x = ReactDOM.findDOMNode(this.refs.myInput).value;
+        this.state.message = x;
+        console.log(this.state.message);
+
+        this.props.onUpdate(this.state.message);
+        this.refs.myInput.value = "";
+
+
     }
+
+
+
 
     render() {
 
         var nameFormStyle = {
-            fontFamily: "Roboto",
-            position: "relative",
-            height: "25%",
-            width: "50%",
-            top: "10vh",
-            margin: "auto"
-
-
-
+            position: "absolute",
+            bottom: 0,
+            paddingBottom: "10vh",
+            paddingTop: "3vh",
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            backgroundColor: "#131163",
+            left: 0,
+          
 
         };
 
 
+        var inputStyle = {
+            position: "relative",
+            width: "80%",
+
+            borderRadius: 10,
+            fontFamily: "Roboto",
+            backgroundColor: "#99ffff",
+            border: "none",
+            height: "1.5em",
+            fontSize: "1em",
+            padding: ".15em",
+            margins: "1%"
+
+        };
+
+        var buttonStyle = {
+            borderRadius: 6,
+            backgroundColor: "#11ffff",
+            fontFamily: "Roboto Condensed",
+            border: "none",
+            width: "13%",
+            fontSize: "1em",
+            height: "1.75em",
+            marginLeft: ".5em",
+            padding: ".15em"
+        }
+
 
         return (
-            <div style={nameFormStyle}>
+            <div style={nameFormStyle} >
       
               
-          <input type='text' ref='myInput'/>
-          <input type='button' onClick={this.update} value='Talk 2 Jeff'/>
+          <input type='text'  ref='myInput' style ={inputStyle} onKeyDown={this.handleKeyPress} />
+          <input type='button' style={buttonStyle} onClick={this.onUpdate} value='SEND'/>
          
 
       

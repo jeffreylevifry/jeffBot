@@ -11,7 +11,8 @@ class portfolio  extends React.Component{
   
   
   var portStyle = {
-    position: "absolute",
+    margin: 0,
+    padding: 0,
     height:"100%",
     width: "100%",
     textAlign: "center",
@@ -19,13 +20,15 @@ class portfolio  extends React.Component{
     
   };
 
-			
+
+			        
+			        
     return (
       <div id="portfolio-outer" style={portStyle}>
-      		JEFF BOT TEST
+      	
 	  <ChatShell/>
       
- 
+
 	
 			</div>
 
