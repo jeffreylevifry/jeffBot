@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ChatShell = require('./chatshell.jsx');
+var Header = require('./header.jsx');
 
 
 
@@ -25,6 +26,7 @@ class portfolio  extends React.Component{
 			        
     return (
       <div id="portfolio-outer" style={portStyle}>
+     
       	
 	  <ChatShell/>
       

@@ -2,6 +2,8 @@ $sky-blue: #2B99FF;
 $earth-green: #67A256;
 $slate-grey: #545454;
 $dismiss-yellow: #f9ec31;
+$magenta: #7F007F;
+
 
 
 body, html {
@@ -27,7 +29,7 @@ body, html {
 .user-message {
     float: right;
     text-align: right;
-    margin-bottom: 1em;
+    margin-bottom: 20px;
     width: 96%;
     .message {
         background: $sky-blue;
@@ -37,12 +39,14 @@ body, html {
 .bot-message {
     float: left;
     text-align: left;
-    margin-bottom: 1em;
+    margin-bottom: 20px;
     width: 96%;
     .message {
-        background: $earth-green;
+        background: $magenta;
     }
 }
+
+/*
 .bot-message:after {
 z-index: -1;
   content: ' ';
@@ -52,7 +56,6 @@ z-index: -1;
   left: -9%;
   top: 0.7em;
   border: 15px solid;
-
   border-color: $earth-green transparent transparent $earth-green;
 }
 
@@ -68,3 +71,4 @@ z-index: -1;
 
   border-color: $sky-blue $sky-blue transparent  transparent;
 }
+*/

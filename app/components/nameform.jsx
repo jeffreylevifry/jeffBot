@@ -29,7 +29,6 @@ class nameForm extends React.Component {
     }
 
     onUpdate() {
-        console.log("update fired");
         var x = ReactDOM.findDOMNode(this.refs.myInput).value;
         this.state.message = x;
         console.log(this.state.message);
@@ -46,15 +45,19 @@ class nameForm extends React.Component {
     render() {
 
         var nameFormStyle = {
-            position: "absolute",
+            position: "fixed",
             bottom: 0,
-            paddingBottom: "10vh",
-            paddingTop: "3vh",
+            paddingBottom: "2vh",
+            paddingTop: "2vh",
             width: "100%",
             display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
             flexDirection: "row",
-            backgroundColor: "#131163",
-            left: 0,
+            backgroundColor: "#282858",
+            paddingLeft:"2vw",
+            paddingRight: "2vw",
+            left: 0
           
 
         };
@@ -62,29 +65,32 @@ class nameForm extends React.Component {
 
         var inputStyle = {
             position: "relative",
-            width: "80%",
-
-            borderRadius: 10,
+            width: "87%",
+            borderRadius: 1,
             fontFamily: "Roboto",
-            backgroundColor: "#99ffff",
+            backgroundColor: "#d3d3d3",
             border: "none",
-            height: "1.5em",
-            fontSize: "1em",
-            padding: ".15em",
-            margins: "1%"
+            height: "1.75em",
+            fontSize: "1.25em",
+            textIndent: "1%",
+            flexGrow: 1
 
         };
 
         var buttonStyle = {
-            borderRadius: 6,
-            backgroundColor: "#11ffff",
-            fontFamily: "Roboto Condensed",
-            border: "none",
+
             width: "13%",
-            fontSize: "1em",
-            height: "1.75em",
-            marginLeft: ".5em",
-            padding: ".15em"
+            color: "Transparent",
+            backgroundColor: "transparent",
+            border: "none",
+            height: "auto",
+            marginLeft: "2%",
+            backgroundImage: "url(images/send-icon-new.png)",
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+
+            flexGrow: 1
+
         }
 
 
@@ -93,7 +99,7 @@ class nameForm extends React.Component {
       
               
           <input type='text'  ref='myInput' style ={inputStyle} onKeyDown={this.handleKeyPress} />
-          <input type='button' style={buttonStyle} onClick={this.onUpdate} value='SEND'/>
+          <input type='button' style={buttonStyle} onClick={this.onUpdate}/>
          
 
       
