@@ -18,10 +18,12 @@ class chatMessage extends React.Component {
       return 'user-message';
     }
   }
+  
   handleClick() {
     this.props.handleClick(this.props.message.photo);
-    console.log(this.props.message.photo + "image clicked");
+   
   }
+  
   _onLoad(e) {
 
     this.props.onLoad(e.target.offsetHeight);

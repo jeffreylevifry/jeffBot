@@ -12181,24 +12181,54 @@ var React = __webpack_require__(5);
 var ReactDOM = __webpack_require__(15);
 var ChatShell = __webpack_require__(116);
 var Header = __webpack_require__(117);
+var Hide = __webpack_require__(244);
+var bgImage = "none";
 
 var portfolio = function (_React$Component) {
   _inherits(portfolio, _React$Component);
 
-  function portfolio() {
+  function portfolio(props) {
     _classCallCheck(this, portfolio);
 
-    return _possibleConstructorReturn(this, (portfolio.__proto__ || Object.getPrototypeOf(portfolio)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (portfolio.__proto__ || Object.getPrototypeOf(portfolio)).call(this, props));
+
+    _this.state = { showChat: true }, { showHideButton: false }, { bgImage: bgImage };
+    _this.showPhoto = _this.showPhoto.bind(_this);
+    _this.showChat = _this.showChat.bind(_this);
+    return _this;
   }
 
   _createClass(portfolio, [{
+    key: 'showPhoto',
+    value: function showPhoto(photo) {
+
+      bgImage = "url(" + photo + ")";
+      this.setState({ showChat: false });
+      this.setState({ showHideButton: true });
+      this.setState({ bgImage: photo });
+    }
+  }, {
+    key: 'showChat',
+    value: function showChat() {
+
+      console.log("hide button clicked");
+
+      this.setState({ showChat: true });
+      this.setState({ showHideButton: false });
+    }
+  }, {
     key: 'render',
     value: function render() {
 
       var portStyle = {
+        zIndex: -2,
         margin: 0,
         padding: 0,
-        height: "100%",
+        height: "auto",
+        backgroundImage: bgImage,
+        //   backgroundColor: "#3f3f3f",
+        backgroundSize: "contain",
+        paddingBottom: 500,
         width: "100%",
         textAlign: "center",
         fontFamily: "Roboto"
@@ -12208,7 +12238,8 @@ var portfolio = function (_React$Component) {
       return React.createElement(
         'div',
         { id: 'portfolio-outer', style: portStyle },
-        React.createElement(ChatShell, null)
+        this.state.showChat ? React.createElement(ChatShell, { showHide: this.showPhoto }) : null,
+        this.state.showHideButton ? React.createElement(Hide, { onClick: this.showChat }) : null
       );
     }
   }]);
@@ -12387,12 +12418,6 @@ var chatShell = function (_React$Component) {
     key: 'onLoad',
     value: function onLoad(x) {
 
-      //add current imageHeight to grand total imageheight 
-      var currentTotalImageHeight = this.state.totalImageHeight;
-      this.setState({
-        totalImageHeight: currentTotalImageHeight + x
-      });
-
       this.bottomScroll(x);
     }
   }, {
@@ -12400,6 +12425,7 @@ var chatShell = function (_React$Component) {
     value: function showHide(photo) {
 
       console.log("showHide function photo = " + photo);
+      this.props.showHide(photo);
     }
   }, {
     key: 'onMessageInput',
@@ -12497,14 +12523,13 @@ var chatShell = function (_React$Component) {
       //calculate individual message height
       var messageHeight = node.clientHeight + messageBottomMargin;
 
-      //  var imageHeightMargin = x + messageBottomMargin;
-
-      var totalImageHeight = this.state.totalImageHeight + x;
+      //calculate the new height of all images and set state for future. use the variable for the scrollTo equation because state is aysnc
+      var newTotalImageHeight = this.state.totalImageHeight + x;
+      this.setState({ totalImageHeight: newTotalImageHeight });
 
       // scroll to bottom of the page plus margin
-      var scrollTo = Math.round(messagesInHistory * messageHeight + inputSize + totalImageHeight);
+      var scrollTo = Math.round(messagesInHistory * messageHeight + inputSize + newTotalImageHeight);
 
-      console.log(" x = " + x + "   totalImageHeight = " + totalImageHeight + "scrollto =   " + scrollTo);
       window.scrollTo(0, scrollTo);
     }
   }, {
@@ -12657,7 +12682,6 @@ var chatMessage = function (_React$Component) {
     key: 'handleClick',
     value: function handleClick() {
       this.props.handleClick(this.props.message.photo);
-      console.log(this.props.message.photo + "image clicked");
     }
   }, {
     key: '_onLoad',
@@ -27524,6 +27548,60 @@ ReactDOM.render(React.createElement(
     React.createElement(_reactRouter.Route, { path: '/chatbox', name: 'chatbox', component: Chatbox })
   )
 ), document.getElementById('app'));
+
+/***/ }),
+/* 244 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = __webpack_require__(5);
+var ReactDOM = __webpack_require__(15);
+
+var showChatButton = function (_React$Component) {
+    _inherits(showChatButton, _React$Component);
+
+    function showChatButton(props) {
+        _classCallCheck(this, showChatButton);
+
+        return _possibleConstructorReturn(this, (showChatButton.__proto__ || Object.getPrototypeOf(showChatButton)).call(this, props));
+    }
+
+    _createClass(showChatButton, [{
+        key: 'render',
+        value: function render() {
+
+            var buttonStyle = {
+                position: "relative",
+                left: "auto",
+                right: "auto",
+                marginTop: "80%"
+
+            };
+
+            return React.createElement(
+                'button',
+                { type: 'button', onClick: this.props.onClick, style: buttonStyle },
+                'SHOW CHAT'
+            );
+        }
+    }]);
+
+    return showChatButton;
+}(React.Component);
+
+;
+
+module.exports = showChatButton;
 
 /***/ })
 /******/ ]);

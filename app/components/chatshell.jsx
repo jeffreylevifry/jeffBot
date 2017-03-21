@@ -34,11 +34,8 @@ class chatShell extends React.Component {
 
 
 
-    //add current imageHeight to grand total imageheight 
-    var currentTotalImageHeight = this.state.totalImageHeight;
-    this.setState({
-      totalImageHeight: currentTotalImageHeight + x
-    });
+
+
 
 
     this.bottomScroll(x);
@@ -51,6 +48,7 @@ class chatShell extends React.Component {
   showHide(photo) {
 
     console.log("showHide function photo = " + photo);
+    this.props.showHide(photo);
   }
   
   
@@ -164,15 +162,14 @@ class chatShell extends React.Component {
     //calculate individual message height
     var messageHeight = node.clientHeight + messageBottomMargin;
 
-    //  var imageHeightMargin = x + messageBottomMargin;
-
-    var totalImageHeight = this.state.totalImageHeight + x;
+    //calculate the new height of all images and set state for future. use the variable for the scrollTo equation because state is aysnc
+    var newTotalImageHeight = this.state.totalImageHeight + x;
+     this.setState({totalImageHeight: newTotalImageHeight});
 
 
     // scroll to bottom of the page plus margin
-    var scrollTo = Math.round((messagesInHistory * messageHeight) + inputSize + totalImageHeight);
+    var scrollTo = Math.round((messagesInHistory * messageHeight) + inputSize + newTotalImageHeight);
 
-    console.log(" x = " + x + "   totalImageHeight = " + totalImageHeight + "scrollto =   " + scrollTo);
     window.scrollTo(0, scrollTo);
 
 
@@ -201,14 +198,12 @@ class chatShell extends React.Component {
     return (
 
       <div id="chatShell" style={outerStyle} ref ="chatShell" >
-      
   
               {this.state.messageHistory.map(function(message, i, image ) {
           return (
-  
             <ChatMessage key={i} message={message} image={image} onLoad={this.onLoad} handleClick={this.showHide} ref="message"> </ChatMessage>
-            
            );
+           
         }, this)} 
       <NameForm  onUpdate={this.onMessageInput} ref="inputSize"/>
  
