@@ -98,7 +98,7 @@ class nameForm extends React.Component {
             <div style={nameFormStyle} >
       
               
-          <input type='text'  ref='myInput' style ={inputStyle} onKeyDown={this.handleKeyPress} />
+          <input type='text' id="myInput" ref='myInput' style ={inputStyle} onKeyDown={this.handleKeyPress} />
           <input type='button' style={buttonStyle} onClick={this.onUpdate}/>
          
 

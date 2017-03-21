@@ -12,25 +12,31 @@ body, html {
     height: 100%;
     width: 100%;
     font-family: Roboto;
-    font-size: 15px;
+    font-size: 17px;
     color: #fff;
+
 }
 
 #portfolio-outer {}
 
 .message {
     display: inline-block;
-    padding: 12px 20px;
-    border-radius: 10px;
+    padding: 12px 24px;
+    border-radius: 11px;
     font-family: Roboto;
+    width: auto;
     
 }
 
 .user-message {
+
     float: right;
-    text-align: right;
+    display: inline-block;
+    margin-right: 0px;
     margin-bottom: 20px;
-    width: 96%;
+    width: 65%;
+    overflow: hidden;
+    text-align: right;
     .message {
         background: $sky-blue;
     }
@@ -40,35 +46,40 @@ body, html {
     float: left;
     text-align: left;
     margin-bottom: 20px;
-    width: 96%;
+    width: 65%;
     .message {
         background: $magenta;
     }
 }
 
-/*
+
+
 .bot-message:after {
-z-index: -1;
-  content: ' ';
-  position: relative;
-  width: 0;
-  height: 0;
-  left: -9%;
-  top: 0.7em;
-  border: 15px solid;
-  border-color: $earth-green transparent transparent $earth-green;
+ 
+    z-index: -1;
+    content: "";
+    position: relative;
+    bottom: 10px;
+    left: 10px;
+    border-width: 25px 22px 0;
+    border-style: solid;
+    border-color: $magenta transparent;
+    display: block;
+    width: 0;
 }
 
 .user-message:after {
-z-index: -1;
-  content: ' ';
-  position: relative;
-  width: 0;
-  height: 0;
-  right: 11%;
-  top: 0.7em;
-  border: 15px solid;
+    
 
-  border-color: $sky-blue $sky-blue transparent  transparent;
+    z-index: -1;
+    content: "";
+    position: relative;
+    bottom: 10px;
+    right: -88%;
+    
+    border-width: 20px 18px 0;
+    border-style: solid;
+    border-color: $sky-blue transparent;
+    display: block;
+    width: 0;
 }
-*/

@@ -8381,7 +8381,7 @@ var nameForm = function (_React$Component) {
             return React.createElement(
                 'div',
                 { style: nameFormStyle },
-                React.createElement('input', { type: 'text', ref: 'myInput', style: inputStyle, onKeyDown: this.handleKeyPress }),
+                React.createElement('input', { type: 'text', id: 'myInput', ref: 'myInput', style: inputStyle, onKeyDown: this.handleKeyPress }),
                 React.createElement('input', { type: 'button', style: buttonStyle, onClick: this.onUpdate })
             );
         }
@@ -12355,10 +12355,6 @@ var ReactDOM = __webpack_require__(15);
 var NameForm = __webpack_require__(72);
 var ChatMessage = __webpack_require__(118);
 
-//variable for scrolling. see bottomScroll() below
-var marginBottom = 200;
-var totalImageHeight;
-
 var chatShell = function (_React$Component) {
   _inherits(chatShell, _React$Component);
 
@@ -12368,7 +12364,6 @@ var chatShell = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (chatShell.__proto__ || Object.getPrototypeOf(chatShell)).call(this, props));
 
     _this.state = {
-      imageHeight: 0,
       totalImageHeight: 0,
       messageHistory: [{
         message: "Oh, Hi there, I didn't see you come in!",
@@ -12377,12 +12372,13 @@ var chatShell = function (_React$Component) {
       }]
     };
 
+    //function bindings
     _this.onMessageInput = _this.onMessageInput.bind(_this);
     _this.addMessage = _this.addMessage.bind(_this);
     _this.recieveMessage = _this.recieveMessage.bind(_this);
     _this.sendMessage = _this.sendMessage.bind(_this);
     _this.onLoad = _this.onLoad.bind(_this);
-    _this.setImage = _this.setImage.bind(_this);
+    _this.showHide = _this.showHide.bind(_this);
 
     return _this;
   }
@@ -12391,53 +12387,59 @@ var chatShell = function (_React$Component) {
     key: 'onLoad',
     value: function onLoad(x) {
 
-      this.setState({ imageHeight: x }, this.setImage(x));
-    }
-  }, {
-    key: 'setImage',
-    value: function setImage(x) {
-      marginBottom = marginBottom + x;
       //add current imageHeight to grand total imageheight 
       var currentTotalImageHeight = this.state.totalImageHeight;
-      this.setState({ totalImageHeight: currentTotalImageHeight + x });
-      console.log("setImage() totalimageHeight = " + this.state.totalImageHeight);
+      this.setState({
+        totalImageHeight: currentTotalImageHeight + x
+      });
 
       this.bottomScroll(x);
     }
   }, {
+    key: 'showHide',
+    value: function showHide(photo) {
+
+      console.log("showHide function photo = " + photo);
+    }
+  }, {
     key: 'onMessageInput',
     value: function onMessageInput(message) {
-
+      /// no blank inquries allowed
       if (message == "") {
         return;
       }
+      //add message to the history and API call
       this.addMessage(message);
       this.callBot(message);
     }
   }, {
     key: 'callBot',
     value: function callBot(message) {
+      //test for special key words to load pictures
       var specialQTest = window.specialQueries(message);
       if (specialQTest != null) {
         this.recieveMessage(specialQTest[0], specialQTest[1]);
-      } else {
-
-        var message = message.replace(/\?/g, '');
-        var that = this;
-
-        $.ajax({
-          type: 'POST',
-          url: 'https://aiaas.pandorabots.com/talk/1409614296740/jeffbot?input=' + message + '&user_key=b5f54f7af260b694b11fe16c221889f0',
-
-          contentType: 'application/x-www-form-urlencoded',
-          dataType: 'json',
-          success: function success(data) {
-            data = data.responses[0];
-            that.recieveMessage(data);
-          }
-
-        });
       }
+
+      ///API call if message is not keyworded
+
+      else {
+          var message = message.replace(/\?/g, '');
+          var that = this;
+
+          $.ajax({
+            type: 'POST',
+            url: 'https://aiaas.pandorabots.com/talk/1409614296740/jeffbot?input=' + message + '&user_key=b5f54f7af260b694b11fe16c221889f0',
+
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: 'json',
+            success: function success(data) {
+              data = data.responses[0];
+              that.recieveMessage(data);
+            }
+
+          });
+        }
     }
   }, {
     key: 'addMessage',
@@ -12476,12 +12478,11 @@ var chatShell = function (_React$Component) {
       this.addMessage(message);
     }
   }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {}
-  }, {
     key: 'bottomScroll',
     value: function bottomScroll(x) {
+      console.log("**************************START BOTTOMSCROLL****************************");
 
+      // this value is hardcoded as the bottom margin of .message in the main.scss file
       var messageBottomMargin = 20;
 
       //get size of the input box
@@ -12503,9 +12504,7 @@ var chatShell = function (_React$Component) {
       // scroll to bottom of the page plus margin
       var scrollTo = Math.round(messagesInHistory * messageHeight + inputSize + totalImageHeight);
 
-      console.log(".totalImageHeight = " + totalImageHeight + "  x = " + x + "messages in history = " + messagesInHistory);
-      console.log("scrollTo = " + scrollTo + "marginBottom = " + marginBottom);
-
+      console.log(" x = " + x + "   totalImageHeight = " + totalImageHeight + "scrollto =   " + scrollTo);
       window.scrollTo(0, scrollTo);
     }
   }, {
@@ -12519,7 +12518,7 @@ var chatShell = function (_React$Component) {
         marginLeft: "auto",
         marginRight: "auto",
         marginTop: "auto",
-        marginBottom: marginBottom,
+        marginBottom: "15vh",
         padding: "2%",
         backgroundImage: "none"
 
@@ -12531,7 +12530,7 @@ var chatShell = function (_React$Component) {
         this.state.messageHistory.map(function (message, i, image) {
           return React.createElement(
             ChatMessage,
-            { key: i, message: message, image: image, onLoad: this.onLoad, ref: 'message' },
+            { key: i, message: message, image: image, onLoad: this.onLoad, handleClick: this.showHide, ref: 'message' },
             ' '
           );
         }, this),
@@ -12640,6 +12639,7 @@ var chatMessage = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (chatMessage.__proto__ || Object.getPrototypeOf(chatMessage)).call(this, props));
 
     _this._onLoad = _this._onLoad.bind(_this);
+    _this.handleClick = _this.handleClick.bind(_this);
 
     return _this;
   }
@@ -12652,6 +12652,12 @@ var chatMessage = function (_React$Component) {
       } else {
         return 'user-message';
       }
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick() {
+      this.props.handleClick(this.props.message.photo);
+      console.log(this.props.message.photo + "image clicked");
     }
   }, {
     key: '_onLoad',
@@ -12671,10 +12677,16 @@ var chatMessage = function (_React$Component) {
         maxWidth: "100%",
         maxHeight: "100%"
       };
+      var chatWindowStyle = {
+        maxWidth: "100%",
+        maxHeight: "100%",
+        height: "auto",
+        overflow: "auto"
+      };
 
       return React.createElement(
         'div',
-        { id: 'chatWindow' },
+        { id: 'chatWindow', style: chatWindowStyle },
         React.createElement(
           'div',
           { className: this.generateClasses() },
@@ -12682,11 +12694,9 @@ var chatMessage = function (_React$Component) {
             'div',
             { className: 'message', onLoad: this._onLoad },
             this.props.message.message,
-            '  ',
-            React.createElement('img', { src: this.props.message.photo, style: imageStyle })
+            React.createElement('img', { src: this.props.message.photo, style: imageStyle, onClick: this.handleClick })
           )
-        ),
-        React.createElement('div', { id: 'spacer', style: spacerStyle })
+        )
       );
     }
   }]);
@@ -12707,7 +12717,7 @@ exports = module.exports = __webpack_require__(120)();
 
 
 // module
-exports.push([module.i, "body, html {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  width: 100%;\n  font-family: Roboto;\n  font-size: 15px;\n  color: #fff; }\n\n.message {\n  display: inline-block;\n  padding: 12px 20px;\n  border-radius: 10px;\n  font-family: Roboto; }\n\n.user-message {\n  float: right;\n  text-align: right;\n  margin-bottom: 20px;\n  width: 96%; }\n  .user-message .message {\n    background: #2B99FF; }\n\n.bot-message {\n  float: left;\n  text-align: left;\n  margin-bottom: 20px;\n  width: 96%; }\n  .bot-message .message {\n    background: #7F007F; }\n\n/*\n.bot-message:after {\nz-index: -1;\n  content: ' ';\n  position: relative;\n  width: 0;\n  height: 0;\n  left: -9%;\n  top: 0.7em;\n  border: 15px solid;\n  border-color: $earth-green transparent transparent $earth-green;\n}\n\n.user-message:after {\nz-index: -1;\n  content: ' ';\n  position: relative;\n  width: 0;\n  height: 0;\n  right: 11%;\n  top: 0.7em;\n  border: 15px solid;\n\n  border-color: $sky-blue $sky-blue transparent  transparent;\n}\n*/\n", ""]);
+exports.push([module.i, "body, html {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  width: 100%;\n  font-family: Roboto;\n  font-size: 17px;\n  color: #fff; }\n\n.message {\n  display: inline-block;\n  padding: 12px 24px;\n  border-radius: 11px;\n  font-family: Roboto;\n  width: auto; }\n\n.user-message {\n  float: right;\n  display: inline-block;\n  margin-right: 0px;\n  margin-bottom: 20px;\n  width: 65%;\n  overflow: hidden;\n  text-align: right; }\n  .user-message .message {\n    background: #2B99FF; }\n\n.bot-message {\n  float: left;\n  text-align: left;\n  margin-bottom: 20px;\n  width: 65%; }\n  .bot-message .message {\n    background: #7F007F; }\n\n.bot-message:after {\n  z-index: -1;\n  content: \"\";\n  position: relative;\n  bottom: 10px;\n  left: 10px;\n  border-width: 25px 22px 0;\n  border-style: solid;\n  border-color: #7F007F transparent;\n  display: block;\n  width: 0; }\n\n.user-message:after {\n  z-index: -1;\n  content: \"\";\n  position: relative;\n  bottom: 10px;\n  right: -88%;\n  border-width: 20px 18px 0;\n  border-style: solid;\n  border-color: #2B99FF transparent;\n  display: block;\n  width: 0; }\n", ""]);
 
 // exports
 
