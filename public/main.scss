@@ -17,7 +17,14 @@ body, html {
 
 }
 
-#portfolio-outer {}
+button{
+    background-color: $magenta;
+    font-family: Roboto;
+    padding: 2%;
+    color: #fff;
+border: none;
+border-radius: 25px;
+}
 
 .message {
     display: inline-block;
@@ -75,7 +82,7 @@ body, html {
     content: "";
     position: relative;
     bottom: 10px;
-    right: -88%;
+    right: -95%;
     
     border-width: 20px 18px 0;
     border-style: solid;
@@ -83,3 +90,14 @@ body, html {
     display: block;
     width: 0;
 }
+
+@media only screen and (max-device-width: 540px) {
+    
+    
+    .user-message:after {
+
+    right: -83%;
+    
+}
+
+	}

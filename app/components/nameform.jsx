@@ -31,7 +31,7 @@ class nameForm extends React.Component {
     onUpdate() {
         var x = ReactDOM.findDOMNode(this.refs.myInput).value;
         this.state.message = x;
-        console.log(this.state.message);
+        console.log("INPUT in onUpdate in nameForm.jsx = " +this.state.message);
 
         this.props.onUpdate(this.state.message);
         this.refs.myInput.value = "";

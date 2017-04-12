@@ -2,22 +2,24 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var NameForm = require('./nameform.jsx');
 var ChatMessage = require('./message.jsx');
-
+import SMH from '../../public/scripts/chatHistory.js';
 
 class chatShell extends React.Component {
 
   constructor(props) {
     super(props)
+    
+    console.log(SMH.chatHistory);
+    
     this.state = {
       totalImageHeight: 0,
-      messageHistory: [{
-        message: "Oh, Hi there, I didn't see you come in!",
-        from: "bot"
-
-      }]
+      messageHistory: SMH.chatHistory 
+         
     };
-
-
+    
+    
+    
+  
     //function bindings
     this.onMessageInput = this.onMessageInput.bind(this);
     this.addMessage = this.addMessage.bind(this);
@@ -33,17 +35,19 @@ class chatShell extends React.Component {
   onLoad(x) {
 
 
-
-
-
-
-
     this.bottomScroll(x);
 
 
-
-
   }
+  
+  componentDidMount() {
+    
+    if(SMH.chatHistory.length<2){
+    this.callBot("main menu");
+    }
+  }
+  
+  
 
   showHide(photo) {
 
@@ -69,8 +73,10 @@ class chatShell extends React.Component {
   callBot(message) {
     //test for special key words to load pictures
     var specialQTest = window.specialQueries(message);
+    that = this;
     if (specialQTest != null) {
-      this.recieveMessage(specialQTest[0], specialQTest[1]);
+      setTimeout(function(){ that.recieveMessage(specialQTest[0], specialQTest[1]);},500);
+     
 
     }
     
@@ -101,12 +107,14 @@ class chatShell extends React.Component {
   addMessage(data) {
 
     this.setState(function(previousState) {
-      previousState.messageHistory.push({
+ 
+      
+          SMH.chatHistory.push({
         message: data,
         from: 'you'
       });
       return {
-        messageHistory: previousState.messageHistory
+        messageHistory: SMH.chatHistory
       };
     })
 
@@ -118,14 +126,17 @@ class chatShell extends React.Component {
   recieveMessage(data, photo) {
 
     this.setState(function(previousState) {
-      previousState.messageHistory.push({
+      
+      
+    SMH.chatHistory.push({
         message: data,
         photo: photo,
         from: 'bot'
       });
-
+      
+      
       return {
-        messageHistory: previousState.messageHistory
+        messageHistory: SMH.chatHistory
       };
     }), this.bottomScroll(0);
 
@@ -141,9 +152,8 @@ class chatShell extends React.Component {
 
 
 
-
   bottomScroll(x) {
-    console.log("**************************START BOTTOMSCROLL****************************")
+    console.log("**************************START BOTTOMSCROLL****************************");
 
     // this value is hardcoded as the bottom margin of .message in the main.scss file
     var messageBottomMargin = 20;
@@ -156,7 +166,7 @@ class chatShell extends React.Component {
     var node = ReactDOM.findDOMNode(this.refs.message);
 
     //calculate page height based on messages
-    var messagesInHistory = this.state.messageHistory.length + 2;
+    var messagesInHistory = this.state.messageHistory.length;
 
 
     //calculate individual message height
@@ -168,8 +178,10 @@ class chatShell extends React.Component {
 
 
     // scroll to bottom of the page plus margin
-    var scrollTo = Math.round((messagesInHistory * messageHeight) + inputSize + newTotalImageHeight);
+    
+     var scrollTo = Math.round((messagesInHistory * messageHeight) + inputSize + newTotalImageHeight);
 
+    console.log("scrollTo = "+ scrollTo);
     window.scrollTo(0, scrollTo);
 
 

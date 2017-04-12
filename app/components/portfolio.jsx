@@ -34,9 +34,10 @@ class portfolio  extends React.Component{
     showChat() {
       
     console.log("hide button clicked");
-
+    bgImage="";
     this.setState({ showChat: true });
     this.setState({ showHideButton: false });
+    this.setState({ bgImage: bgImage});
   }
 
     render() {
@@ -48,9 +49,11 @@ class portfolio  extends React.Component{
     padding: 0,
     height: "auto",
     backgroundImage: bgImage,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "50% 0",
  //   backgroundColor: "#3f3f3f",
     backgroundSize: "contain",
-    paddingBottom: 500,
+  //  paddingBottom: 500,
     width: "100%",
     textAlign: "center",
     fontFamily: "Roboto"
